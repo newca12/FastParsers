@@ -1,10 +1,13 @@
 /**
  * Created by Eric on 07.04.14.
  */
+import fastparsers.framework.parseresult.Failure
+import fastparsers.framework.parseresult.Success
+
 object Calculator {
 
-  /*def main(args: Array[String])  {
-    import FastParsers._
+  def main(args: Array[String])  {
+    import fastparsers.framework.implementations.FastParsers._
 
     def exec(x:(Int,Option[(Function2[Int,Int,Int],Int)])):Int = x._2 match {
       case None => x._1
@@ -23,10 +26,11 @@ object Calculator {
       def expr:fastparsers.parsers.Parser[Int] = term ~ opt(op1 ~ expr) ^^ exec
     }
 
-    code.expr("21+(5+1 ) * 2 +2 *8") match {
+    //code.expr("21+(5+1 ) * 2 +2 *8") match {
+    code.expr("3-1+2 * 3") match {
       case Success(x) => println(x)
       case Failure(error) => println("failure : " + error)
     }
 
-  } */
+  } 
 }

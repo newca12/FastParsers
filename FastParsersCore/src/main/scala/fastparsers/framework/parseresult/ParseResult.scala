@@ -9,4 +9,4 @@ package fastparsers.framework.parseresult
  * @tparam T Type of the result
  * @tparam U Type of the error
  */
-case class ParseResult[+T,U](success: Boolean, error: U, result: T, inputPos: Int)
+case class ParseResult[+T, U](success: Boolean, error: U, result: T, inputPos: Int)

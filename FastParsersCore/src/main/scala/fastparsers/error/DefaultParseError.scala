@@ -6,7 +6,7 @@ package fastparsers.error
 /**
  * An error manager that replicate the one used in Scala Parser combinators, so not really helpful.
  */
-trait DefaultParseError extends ParseError{
+trait DefaultParseError extends ParseError {
   import c.universe._
 
   def errorType = tq"String"

@@ -12,7 +12,7 @@ trait ParseInput {
 
   def inputType: c.Type
   def inputElemType: c.Type
-  def inputWindowType: c.Type = c.typecheck(tq"fastparsers.input.InputWindow.InputWindow[$inputElemType]",c.TYPEmode).tpe
+  def inputWindowType: c.Type = c.typecheck(tq"fastparsers.input.InputWindow.InputWindow[$inputElemType]", c.TYPEmode).tpe
 
   val inputValue = TermName(c.freshName("input"))
 
@@ -24,7 +24,7 @@ trait ParseInput {
 
   def setpos(pos: c.Tree): c.Tree
 
-  def mark(code: c.Tree => c.Tree): c.Tree
+  def mark(code: c.Tree ⇒ c.Tree): c.Tree
 
   def isEOI: c.Tree
 

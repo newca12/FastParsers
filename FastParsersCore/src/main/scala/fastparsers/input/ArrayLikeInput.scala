@@ -12,7 +12,6 @@ trait ArrayLikeInput extends ParseInput {
   private val inputpos = TermName(c.freshName("inputpos"))
   private val inputlength = TermName(c.freshName("inputsize"))
 
-
   def initInput(startpos: c.Tree, then: c.Tree) =
     q"""
       var $inputpos = $startpos
@@ -26,7 +25,7 @@ trait ArrayLikeInput extends ParseInput {
 
   def setpos(pos: c.Tree): c.Tree = q"$inputpos = $pos"
 
-  def mark(code: c.Tree => c.Tree) = {
+  def mark(code: c.Tree ⇒ c.Tree) = {
     val input_tmp = TermName(c.freshName)
     q"""
       val $input_tmp = $inputpos

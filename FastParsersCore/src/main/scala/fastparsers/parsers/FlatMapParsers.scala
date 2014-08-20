@@ -10,10 +10,10 @@ trait FlatMapParsers {
 
   implicit class flatmapparsers[T](p: Parser[T]) {
     @compileTimeOnly("can’t be used outside FastParser")
-    def flatMap[U](f: T => Parser[U]): Parser[U] = ???
+    def flatMap[U](f: T ⇒ Parser[U]): Parser[U] = ???
 
     @compileTimeOnly("can’t be used outside FastParser")
-    def >>[U](f: T => Parser[U]): Parser[U] = ???
+    def >>[U](f: T ⇒ Parser[U]): Parser[U] = ???
   }
 
 }

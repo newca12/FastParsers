@@ -5,11 +5,10 @@ import fastparsers.input.ParseInput
 import scala.reflect.macros.whitebox.Context
 import scala.collection.mutable.ListBuffer
 
-
 /**
  * Provide the interface and the basics method needed to implement the transformation on parsers
  */
-trait ParserImplBase { self: ParseInput with ParseError =>
+trait ParserImplBase { self: ParseInput with ParseError ⇒
   val c: Context
 
   import c.universe._
@@ -30,14 +29,13 @@ trait ParserImplBase { self: ParseInput with ParseError =>
     def this() = this(new ListBuffer[Result]())
 
     @deprecated("will be removed")
-    protected def setNoUse = results = results.map(x => (x._1, x._2, false))
+    protected def setNoUse = results = results.map(x ⇒ (x._1, x._2, false))
     protected def append(t: TermName, typ: c.Tree): Unit = append((t, typ, true))
     @deprecated("will be removed")
     protected def append(rs: ResultsStruct): Unit = rs.results.foreach(append(_))
 
     //TODO modifier !!
     def append(r: Result): Unit = results.append(r)
-
 
     def newVar(typ: c.Tree): TermName = {
       val t = c.freshName
@@ -60,7 +58,7 @@ trait ParserImplBase { self: ParseInput with ParseError =>
 
     def assignNew(code: c.Tree, typ: c.Tree): c.Tree = {
       val result = TermName(c.freshName)
-      append(result,typ)
+      append(result, typ)
       q"$result = $code"
     }
 
@@ -76,9 +74,8 @@ trait ParserImplBase { self: ParseInput with ParseError =>
         val first = usedResults(0)
         val sec = usedResults(1)
         val rest = usedResults.drop(2)
-        rest.foldLeft(q"(${first._1},${sec._1})")((acc, e) => q"($acc,${e._1})")
-      }
-      else if (usedResults.size == 1)
+        rest.foldLeft(q"(${first._1},${sec._1})")((acc, e) ⇒ q"($acc,${e._1})")
+      } else if (usedResults.size == 1)
         q"${usedResults(0)._1}"
       else
         q"Nil"
@@ -93,17 +90,16 @@ trait ParserImplBase { self: ParseInput with ParseError =>
   class TemporaryResults(dependence: ResultsStruct) extends ResultsStruct {
     override def append(r: Result) = {
       super.append(r)
-      dependence.append((r._1,r._2,false))
+      dependence.append((r._1, r._2, false))
     }
   }
 
-  trait IgnoreResult { self : ResultsStruct =>
+  trait IgnoreResult { self: ResultsStruct ⇒
     override def assignNew(code: c.Tree, typ: c.Tree) = q"()"
-    override def combine = q"()"//c.abort(c.enclosingPosition, "cannot combine results while ignoring them")
+    override def combine = q"()" //c.abort(c.enclosingPosition, "cannot combine results while ignoring them")
     override def assignTo(result: TermName, value: c.Tree): c.Tree = q"()"
     override def temporary = new TemporaryResults(this) with IgnoreResult
   }
-
 
   /**
    * Get the "zero" value of a certain type
@@ -114,22 +110,22 @@ trait ParserImplBase { self: ParseInput with ParseError =>
 
   def zeroValue(typ: c.Tree) = {
     def fromString(str: String) = str match {
-      case "Char" => q"' '"
-      case "Int" => q"0"
-      case "Float" => q"0"
-      case "Double" => q"0.0D"
-      case "String" => q""""""""
-      case x if x.startsWith("List") => q"Nil"
-      case _ => q"null"
+      case "Char"                    ⇒ q"' '"
+      case "Int"                     ⇒ q"0"
+      case "Float"                   ⇒ q"0"
+      case "Double"                  ⇒ q"0.0D"
+      case "String"                  ⇒ q""""""""
+      case x if x.startsWith("List") ⇒ q"Nil"
+      case _                         ⇒ q"null"
     }
     typ match {
-      case Ident(TypeName(name)) => fromString(name)
-      case AppliedTypeTree(Ident(TypeName("List")), _) => q"Nil"
-      case x => fromString(x.toString)
+      case Ident(TypeName(name)) ⇒ fromString(name)
+      case AppliedTypeTree(Ident(TypeName("List")), _) ⇒ q"Nil"
+      case x ⇒ fromString(x.toString)
     }
   }
 
- /* def zeroValue(typ: c.Tree) =
+  /* def zeroValue(typ: c.Tree) =
   if (typ != null) typ.tpe match {
       case t if t =:= typeOf[Char]    => q"' '"
       case t if t =:= typeOf[Int]     => q"0"
@@ -156,15 +152,15 @@ trait ParserImplBase { self: ParseInput with ParseError =>
   def prettyPrint(tree: c.Tree): String = "?" //TODO change ?
 }
 
-trait IgnoreResultsPolicy extends ParserImplBase { self: ParseInput with ParseError =>
+trait IgnoreResultsPolicy extends ParserImplBase { self: ParseInput with ParseError ⇒
   def ignoreResult(rs: ResultsStruct): ResultsStruct
 }
 
-trait DontIgnoreResults extends IgnoreResultsPolicy { self: ParseInput with ParseError =>
+trait DontIgnoreResults extends IgnoreResultsPolicy { self: ParseInput with ParseError ⇒
   override def ignoreResult(rs: ResultsStruct): ResultsStruct = rs.temporary
 }
 
-trait IgnoreResults extends IgnoreResultsPolicy { self: ParseInput with ParseError =>
+trait IgnoreResults extends IgnoreResultsPolicy { self: ParseInput with ParseError ⇒
   override def ignoreResult(rs: ResultsStruct): ResultsStruct = new ResultsStruct with IgnoreResult
 }
 

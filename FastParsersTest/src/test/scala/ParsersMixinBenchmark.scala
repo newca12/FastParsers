@@ -18,15 +18,14 @@ object ParsersMixinBenchmark extends PerformanceTest {
 
   val range = Gen.enumeration("size")(10)
 
-
   val bigFileName = "FastParsersTest/src/test/resources/json.big1"
   val bigFile = scala.io.Source.fromFile(bigFileName).getLines mkString "\n"
   val bigFileArray = bigFile.toCharArray
 
   performance of "JsonParser:@FastParsers" in {
     measure method "value" in {
-      using(range) in { j =>
-        for (i <- 1 to j)
+      using(range) in { j ⇒
+        for (i ← 1 to j)
           JSonImpl1.jsonparser.value(bigFile)
       }
     }
@@ -34,8 +33,8 @@ object ParsersMixinBenchmark extends PerformanceTest {
 
   performance of "JsonParser:@FastParsersCharArray" in {
     measure method "value" in {
-      using(range) in { j =>
-        for (i <- 1 to j)
+      using(range) in { j ⇒
+        for (i ← 1 to j)
           JSonImpl2.jsonparser.value(bigFileArray)
       }
     }
@@ -43,8 +42,8 @@ object ParsersMixinBenchmark extends PerformanceTest {
 
   performance of "JsonParser:@FastParsersCharArrayNoInline" in {
     measure method "value" in {
-      using(range) in { j =>
-        for (i <- 1 to j)
+      using(range) in { j ⇒
+        for (i ← 1 to j)
           JSonImpl3.jsonparser.value(bigFileArray)
       }
     }
@@ -52,8 +51,8 @@ object ParsersMixinBenchmark extends PerformanceTest {
 
   performance of "JsonParser:@FastParsersCharArrayDefaultErrors" in {
     measure method "value" in {
-      using(range) in { j =>
-        for (i <- 1 to j)
+      using(range) in { j ⇒
+        for (i ← 1 to j)
           JSonImpl4.jsonparser.value(bigFileArray)
       }
     }
@@ -61,8 +60,8 @@ object ParsersMixinBenchmark extends PerformanceTest {
 
   performance of "JsonParser:@FastParsersCharArrayIgnoreResults" in {
     measure method "value" in {
-      using(range) in { j =>
-        for (i <- 1 to j)
+      using(range) in { j ⇒
+        for (i ← 1 to j)
           JSonImpl5.jsonparser.value(bigFileArray)
       }
     }

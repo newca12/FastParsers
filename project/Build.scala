@@ -1,9 +1,12 @@
 import sbt._
 import Keys._
+import com.typesafe.sbt.SbtScalariform.ScalariformKeys
+import com.typesafe.sbt.SbtScalariform.scalariformSettings
+import scalariform.formatter.preferences._
 
 object FastParsersBuild extends Build {
 
-   def commonSettings = Seq(
+   def commonSettings = Defaults.coreDefaultSettings ++ formattingSettings ++ Seq(
 	   scalaVersion := "2.11.2" ,
            scalacOptions := Seq("-optimize"),
 	   libraryDependencies ++=  Seq(
@@ -11,7 +14,15 @@ object FastParsersBuild extends Build {
 		"org.scala-lang" % "scala-reflect" % scalaVersion.value 
 	)
    )
-	
+
+val formattingSettings = scalariformSettings ++ Seq(
+  ScalariformKeys.preferences := ScalariformKeys.preferences.value
+    .setPreference(RewriteArrowSymbols, true)
+    .setPreference(AlignParameters, true)
+    .setPreference(AlignSingleLineCaseStatements, true)
+    .setPreference(DoubleIndentClassDeclaration, true)
+    .setPreference(PreserveDanglingCloseParenthesis, true))
+
    lazy val FastParsersCore = Project(
 	id = "Fastparsers-core",
 	base = file("FastParsersCore"),
@@ -19,7 +30,7 @@ object FastParsersBuild extends Build {
    )
 
    lazy val Examples = Project(
-	id = "Examples",
+	id = "FastParsers-examples",
 	base = file("Examples"),	
 	dependencies = Seq(FastParsersCore),
 	settings = commonSettings ++ Seq (

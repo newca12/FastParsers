@@ -14,11 +14,11 @@ import scala.util.parsing.input._
 object ToPosition {
 
   trait ToPosition[T] {
-      def get(offset: Int): Position
+    def get(offset: Int): Position
   }
 
   type IndexedCharSeq[T] = {
-    def apply(n: Int):Char
+    def apply(n: Int): Char
     def size: Int
     def slice(start: Int, end: Int): T
   }
@@ -28,13 +28,13 @@ object ToPosition {
    */
 
   implicit class StringProxy(s: String) {
-    def apply(n: Int):Char = s.charAt(n)
+    def apply(n: Int): Char = s.charAt(n)
     def size: Int = s.length
-    def slice(start: Int, end: Int): String = s.substring(start,end)
+    def slice(start: Int, end: Int): String = s.substring(start, end)
   }
 
   implicit class CharArrayProxy(s: Array[Char]) {
-    def apply(n: Int):Char = s(n)
+    def apply(n: Int): Char = s(n)
     def size: Int = s.length
     def slice(start: Int, end: Int): Array[Char] = util.Arrays.copyOfRange(s, start, start + end);
   }
@@ -50,7 +50,7 @@ object ToPosition {
     def computeIndexTill(pos: Int) {
 
       def compute(from: Int, to: Int) = {
-        for (i <- from until to)
+        for (i ← from until to)
           if (input(i) == '\n')
             index += (i + 1)
 
@@ -59,7 +59,7 @@ object ToPosition {
       }
 
       if (pos > index.last && index.last < input.size)
-        compute(index.last + 1,Math.min(pos,input.size))
+        compute(index.last + 1, Math.min(pos, input.size))
     }
 
     def lineFromOffset(pos: Int) = {
@@ -74,14 +74,13 @@ object ToPosition {
       lo + 1
     }
 
-
     def get(offset: Int) = {
-        val l = lineFromOffset(offset)
-        new Position {
-          override protected def lineContents = input.slice(index(line - 1), index(line)).toString   //TODO change that
-          override def line = l
-          override def column = offset - index(lineFromOffset(l) - 1) + 1
-        }
+      val l = lineFromOffset(offset)
+      new Position {
+        override protected def lineContents = input.slice(index(line - 1), index(line)).toString //TODO change that
+        override def line = l
+        override def column = offset - index(lineFromOffset(l) - 1) + 1
+      }
     }
   }
 

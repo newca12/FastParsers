@@ -11,7 +11,6 @@ import scala.util.parsing.input.Positional
 
 trait BaseParsers[Elem, Input] {
 
-
   /*
     Used to deconstruct tuples, i.e write case a~b =>  instead of case (a,b) =>
   */
@@ -25,10 +24,7 @@ trait BaseParsers[Elem, Input] {
   implicit def toElemOrRange(elem: Elem): ElemOrRange = ???
 
   @compileTimeOnly("can’t be used outside FastParser")
-  implicit def toElemOrRange(elem: (Elem,Elem)): ElemOrRange = ???
-
-
-
+  implicit def toElemOrRange(elem: (Elem, Elem)): ElemOrRange = ???
 
   @compileTimeOnly("toElem can’t be used outside FastParser")
   implicit def toElem(elem: Elem): Parser[Elem] = ???
@@ -40,9 +36,7 @@ trait BaseParsers[Elem, Input] {
   def range(a: Elem, b: Elem): Parser[Elem] = ???
 
   @compileTimeOnly("accept can’t be used outside FastParser")
-  def accept(p1: ElemOrRange, p2: ElemOrRange*):Parser[Elem] = ???
-
-
+  def accept(p1: ElemOrRange, p2: ElemOrRange*): Parser[Elem] = ???
 
   /*@compileTimeOnly("can’t be used outside FastParser")
   def acceptRec(p1: ElemOrRange, p2: ElemOrRange*):fastparsers.parsers.Parser[Nothing] = ???
@@ -50,28 +44,26 @@ trait BaseParsers[Elem, Input] {
   @compileTimeOnly("can’t be used outside FastParser")
   def notRec(p1: ElemOrRange, p2: ElemOrRange*):fastparsers.parsers.Parser[Nothing] = ??? */
 
-
-
   @compileTimeOnly("not can’t be used outside FastParser")
   def not(p1: ElemOrRange, p2: ElemOrRange*): Parser[Elem] = ???
 
   @compileTimeOnly("acceptIf can’t be used outside FastParser")
-  def acceptIf(f: Elem => Boolean): Parser[Elem] = ???
+  def acceptIf(f: Elem ⇒ Boolean): Parser[Elem] = ???
 
   @compileTimeOnly("wildcard can’t be used outside FastParser")
   def wildcard: Parser[Elem] = ???
 
   @compileTimeOnly("takeWhile can’t be used outside FastParser")
-  def takeWhile(f: Elem => Boolean): Parser[Input] = ???
+  def takeWhile(f: Elem ⇒ Boolean): Parser[Input] = ???
 
   @compileTimeOnly("takeWhile can’t be used outside FastParser")
-  def takeWhile2(f: Elem => Boolean): Parser[InputWindow[Input]] = ???
+  def takeWhile2(f: Elem ⇒ Boolean): Parser[InputWindow[Input]] = ???
 
   @compileTimeOnly("take can’t be used outside FastParser")
   def take(n: Int): Parser[Input] = ???
 
   @compileTimeOnly("raw can’t be used outside FastParser")
-  def raw[T](p:Parser[T]):Parser[InputWindow[Input]] = ???
+  def raw[T](p: Parser[T]): Parser[InputWindow[Input]] = ???
 
   @compileTimeOnly("guard can’t be used outside FastParser")
   def guard[T](p: Parser[T]): Parser[T] = ???
@@ -85,7 +77,6 @@ trait BaseParsers[Elem, Input] {
   @compileTimeOnly("success can’t be used outside FastParser")
   def success[T](v: T): Parser[T] = ???
 
-
   @compileTimeOnly("position can’t be used outside FastParser")
   def position: Parser[Int] = ???
 
@@ -93,12 +84,11 @@ trait BaseParsers[Elem, Input] {
   def positioned[T <: Positional](p: Parser[T]): Parser[T] = ???
 
   @compileTimeOnly("positioned can’t be used outside FastParser")
-  def call[T](p: Any,params: Any*) : Parser[T] = ???
+  def call[T](p: Any, params: Any*): Parser[T] = ???
   @compileTimeOnly("positioned can’t be used outside FastParser")
-  def callParam[T](p: String) : Parser[T] = ???
-  def compound[T](p:Parser[T]): Parser[T] = ???
+  def callParam[T](p: String): Parser[T] = ???
+  def compound[T](p: Parser[T]): Parser[T] = ???
   def foreignCall[T](p: Any, ruleName: Any, params: Any*) = ???
-
 
   @compileTimeOnly("positioned can’t be used outside FastParser")
   def paramRule[T](p: Any, params: Any*): Parser[T] = ???
@@ -120,21 +110,20 @@ trait BaseParsers[Elem, Input] {
     def |[U >: T](p2: Parser[U]): Parser[U] = ???
 
     @compileTimeOnly("^^ can’t be used outside FastParser")
-    def ^^[U](f: T => U): Parser[U] = ???
+    def ^^[U](f: T ⇒ U): Parser[U] = ???
 
     @compileTimeOnly("map can’t be used outside FastParser")
-    def map[U](f: T => U): Parser[U] = ???
+    def map[U](f: T ⇒ U): Parser[U] = ???
 
     @compileTimeOnly("^^^ can’t be used outside FastParser")
     def ^^^[U](f: U): Parser[U] = ???
 
     @compileTimeOnly("filter can’t be used outside FastParser")
-    def filter[U >: T](f: T => Boolean): Parser[T] = ???
+    def filter[U >: T](f: T ⇒ Boolean): Parser[T] = ???
 
     @compileTimeOnly("withFailureMessage can’t be used outside FastParser")
     def withFailureMessage(msg: String): Parser[T] = ???
   }
-
 
   implicit class elemParser(p1: Elem) extends BaseParser[Elem]
   implicit class baseParsers[T](p1: Parser[T]) extends BaseParser[T]

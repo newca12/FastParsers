@@ -7,6 +7,6 @@ package fastparsers.input
 trait ArrayInput extends ArrayLikeInput {
 
   import c.universe._
-  def inputType     = c.typecheck(tq"Array[$inputElemType]",c.TYPEmode).tpe
+  def inputType = c.typecheck(tq"Array[$inputElemType]", c.TYPEmode).tpe
 
 }

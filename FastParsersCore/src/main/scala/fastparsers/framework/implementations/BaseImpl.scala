@@ -5,7 +5,7 @@ import fastparsers.tools.TreeTools
 import fastparsers.input.ParseInput
 import scala.reflect.macros.whitebox.Context
 import scala.collection.mutable.HashMap
-import fastparsers.framework.ruleprocessing.{RuleCombiner, MapRules}
+import fastparsers.framework.ruleprocessing.{ RuleCombiner, MapRules }
 import fastparsers.parsers.Parser
 
 /**
@@ -17,7 +17,7 @@ import fastparsers.parsers.Parser
  * It must also be composed with a fastparsers.input.ParseInput to allow access on the fastparsers.input.
  */
 trait BaseImpl extends TreeTools {
-  self: MapRules with RuleCombiner with ParseInput =>
+  self: MapRules with RuleCombiner with ParseInput ⇒
   val c: Context
 
   import c.universe._
@@ -36,26 +36,25 @@ trait BaseImpl extends TreeTools {
 
     def getReturnType(ruleCode: c.Tree): Type = c.typecheck(ruleCode).tpe match {
       //case TypeRef(_, y, List(z)) if y.typeSignature =:= typeOf[Parser[_]] => z
-      case TypeRef(_, y, List(z)) if y.fullName == "fastparsers.parsers.Parser" => z //q"Any".tpe//q"var x:${d.tpe}" //check it is a code
-      case v => c.abort(c.enclosingPosition, "incorrect parser type " + show(v))
+      case TypeRef(_, y, List(z)) if y.fullName == "fastparsers.parsers.Parser" ⇒ z //q"Any".tpe//q"var x:${d.tpe}" //check it is a code
+      case v ⇒ c.abort(c.enclosingPosition, "incorrect parser type " + show(v))
     }
-
 
     val rulesMap = new HashMap[String, RuleInfo]()
     c.typecheck(rules) match {
-      case q"{..$body}" =>
+      case q"{..$body}" ⇒
         body.foreach {
           /*case q"def $name[..$t](..$params): $d = $b" =>
-            rulesMap += name.toString -> RuleInfo(getReturnType(d), b, params,t)*///not supported yet
+            rulesMap += name.toString -> RuleInfo(getReturnType(d), b, params,t)*/ //not supported yet
           //case q"def $name(..$params): $_.Parser[$d]" => c.abort(c.enclosingPosition, "yo")
-          case q"def $name(..$params): $d = $b" =>
+          case q"def $name(..$params): $d = $b" ⇒
             rulesMap += name.toString -> RuleInfo(getReturnType(d), b, params, Nil, b)
-          case q"def $name: $d = $b" =>
+          case q"def $name: $d = $b" ⇒
             rulesMap += name.toString -> RuleInfo(getReturnType(d), b, Nil, Nil, b)
-          case q"()" =>
-          case x => c.abort(c.enclosingPosition, "body must only contain rule definition with the following form : def ruleName = body : " + x)
+          case q"()" ⇒
+          case x     ⇒ c.abort(c.enclosingPosition, "body must only contain rule definition with the following form : def ruleName = body : " + x)
         }
-      case _ =>
+      case _ ⇒
         c.abort(c.enclosingPosition, "ill-formed body, cannot be empty") //TODO can be empty ?
     }
     rulesMap

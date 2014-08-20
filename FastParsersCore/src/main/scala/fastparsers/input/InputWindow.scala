@@ -8,14 +8,14 @@ object InputWindow {
    * Class used to represent a result by taking a reference to the original input and the position of its
    * subsequence in it
    */
-  class InputWindow[Input](val in: Input,val start: Int,val end: Int){
+  class InputWindow[Input](val in: Input, val start: Int, val end: Int) {
     override def equals(x: Any) = x match {
-      case s: InputWindow[Input] => s.in == in && s.start == start && s.end == end
-      case _ => super.equals(x)
+      case s: InputWindow[Input] ⇒ s.in == in && s.start == start && s.end == end
+      case _                     ⇒ super.equals(x)
     }
   }
 
-  class StringStruct(in: String,start: Int, end: Int)  extends InputWindow[String](in, start, end){
+  class StringStruct(in: String, start: Int, end: Int) extends InputWindow[String](in, start, end) {
 
     private lazy val realValue = in.slice(start, end)
 
@@ -24,12 +24,12 @@ object InputWindow {
 
     override def toString = realValue
     override def equals(x: Any) = x match {
-      case s: String => realValue == s
-      case _ => super.equals(x)
+      case s: String ⇒ realValue == s
+      case _         ⇒ super.equals(x)
     }
   }
 
-  class CharArrayStruct(in: Array[Char],start: Int, end: Int)  extends InputWindow[Array[Char]](in, start, end){
+  class CharArrayStruct(in: Array[Char], start: Int, end: Int) extends InputWindow[Array[Char]](in, start, end) {
 
     lazy val size = end - start
 
@@ -48,27 +48,27 @@ object InputWindow {
     def apply(n: Int) = in(n + start)
 
     override def toString = realString
-    
+
     override def equals(x: Any) = x match {
-      case s: Array[Char] if s.length == end - start => 
+      case s: Array[Char] if s.length == end - start ⇒
         var i = 0
         var cont = true
         val sLength = end - start
-        while (cont && i < sLength){
+        while (cont && i < sLength) {
           cont = s(i) == in(start + i)
           i += 1
         }
         cont
-      case s: String if s.length == end - start => 
+      case s: String if s.length == end - start ⇒
         var i = 0
         var cont = true
         val sLength = end - start
-        while (cont && i < sLength){
+        while (cont && i < sLength) {
           cont = s(i) == in(start + i)
           i += 1
         }
         cont
-      case _ => super.equals(x)
+      case _ ⇒ super.equals(x)
     }
   }
 

@@ -5,7 +5,7 @@ import java.lang.CharSequence
 
 class FastCharSequence(chars: Array[Char], val startBounds: Int, val endBounds: Int) extends CharSequence {
   def this(chars: Array[Char]) = this(chars, 0, chars.length)
-  def this(input: String)      = this(input.toCharArray)
+  def this(input: String) = this(input.toCharArray)
 
   def length(): Int = endBounds - startBounds
 
